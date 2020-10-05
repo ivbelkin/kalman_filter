@@ -1,0 +1,18 @@
+<launch>
+
+    <arg name="odom_topic" default="odom" />
+    <arg name="odom_filtered_topic" default="odom_filtered" />
+
+    <arg name="play" default="false" />
+    <arg name="bag" default="" />
+
+    <node pkg="kalman_filter" type="kalman_filter.py" name="kalman_filter" output="screen">
+        <remap from="odom" to="$(arg odom_topic)" />
+        <remap from="odom_filtered" to="$(arg odom_filtered_topic)" />
+    </node>
+
+    <group if="$(arg play)">
+        <node pkg="rosbag" type="play" name="player" args="$(arg bag) --loop -r 0.1" />
+    </group>
+
+</launch>
